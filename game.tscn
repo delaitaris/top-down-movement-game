@@ -3,8 +3,11 @@
 [ext_resource type="Script" uid="uid://nfn1x0pbhr5v" path="res://character.gd" id="1_e2o6t"]
 [ext_resource type="Texture2D" uid="uid://ddxmxgyyfy8mn" path="res://icon.svg" id="2_feb5d"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_mwb40"]
-size = Vector2(65, 80)
+[sub_resource type="CircleShape2D" id="CircleShape2D_e2o6t"]
+radius = 30.565504
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_e2o6t"]
+size = Vector2(501, 217)
 
 [node name="Node2D" type="Node2D" unique_id=1356928179]
 
@@ -19,7 +22,7 @@ texture = ExtResource("2_feb5d")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Character" unique_id=323983029]
 position = Vector2(183.5, 127)
-shape = SubResource("RectangleShape2D_mwb40")
+shape = SubResource("CircleShape2D_e2o6t")
 
 [node name="Camera2D" type="Camera2D" parent="Character" unique_id=2143385126]
 offset = Vector2(200, 140)
@@ -32,3 +35,7 @@ position_smoothing_speed = 7.0
 position = Vector2(665, 425)
 scale = Vector2(3.953125, 1.7734375)
 texture = ExtResource("2_feb5d")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=228670739]
+position = Vector2(664.5, 423.5)
+shape = SubResource("RectangleShape2D_e2o6t")
