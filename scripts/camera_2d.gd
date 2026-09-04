@@ -1,18 +1,16 @@
 extends Camera2D
 @export var zoom_speed: float = 0.1
-@export var min_zoom: float = 0.5
+@export var min_zoom: float = 0.7
 @export var max_zoom: float = 3.0
 
-# Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass # Replace with function body.
+	pass
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	pass
 
 func _unhandled_input(event: InputEvent) -> void:
+	#zoom in and out with scroll wheel
 	if event is InputEventMouseButton and event.pressed:
 		if event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
 			zoom -= Vector2(zoom_speed, zoom_speed)
