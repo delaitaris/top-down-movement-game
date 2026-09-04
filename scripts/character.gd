@@ -1,8 +1,8 @@
 extends CharacterBody2D
 @onready var sprite: Sprite2D = $"Sprite2D"
 @export_range(0.0, 180.0) var cone_angle_degrees := 60.0
-@export var normal_speed: float = 150.0
-@export var boosted_speed: float = 300.0
+@export var normal_speed: float = 250.0
+@export var boosted_speed: float = 320.0
 @onready var Poles: Area2D = $"Poles"
 
 var north = false
