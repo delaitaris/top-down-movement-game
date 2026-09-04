@@ -1,5 +1,5 @@
 extends CharacterBody2D
-@onready var sprite: Sprite2D = $"Sprite2D"
+@onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
 @export_range(0.0, 180.0) var cone_angle_degrees := 60.0
 @export var normal_speed: float = 250.0
 @export var boosted_speed: float = 320.0
@@ -32,7 +32,6 @@ func _physics_process(delta: float) -> void:
 				speed = boosted_speed
 
 	velocity = movement_direction * speed
-	print(velocity)
 	move_and_slide()
 
 
