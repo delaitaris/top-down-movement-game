@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://nfn1x0pbhr5v" path="res://character.gd" id="1_e2o6t"]
 [ext_resource type="Texture2D" uid="uid://ddxmxgyyfy8mn" path="res://icon.svg" id="2_feb5d"]
+[ext_resource type="Script" uid="uid://cuyaapx2vxu13" path="res://camera_2d.gd" id="3_feb5d"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_e2o6t"]
 radius = 30.565504
@@ -25,9 +26,10 @@ position = Vector2(183.5, 127)
 shape = SubResource("CircleShape2D_e2o6t")
 
 [node name="Camera2D" type="Camera2D" parent="Character" unique_id=2143385126]
-offset = Vector2(200, 140)
+offset = Vector2(190, 140)
 position_smoothing_enabled = true
 position_smoothing_speed = 7.0
+script = ExtResource("3_feb5d")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=1339583946]
 
