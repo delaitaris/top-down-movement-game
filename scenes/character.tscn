@@ -1,22 +1,63 @@
 [gd_scene format=3 uid="uid://b601km7ojh1bo"]
 
 [ext_resource type="Script" uid="uid://nfn1x0pbhr5v" path="res://scripts/character.gd" id="1_wa5vi"]
-[ext_resource type="Texture2D" uid="uid://ddxmxgyyfy8mn" path="res://sprites/icon.svg" id="2_wfnr8"]
+[ext_resource type="Texture2D" uid="uid://dvk7n6vvo4tlf" path="res://sprites/movement game player sprites.png" id="2_dp8ca"]
+[ext_resource type="Script" uid="uid://b4l0iga6446an" path="res://scenes/animated_sprite_2d.gd" id="3_0lw5n"]
 [ext_resource type="Script" uid="uid://cuyaapx2vxu13" path="res://scripts/camera_2d.gd" id="3_px5sl"]
 [ext_resource type="Script" uid="uid://ctlyw3clbt8uk" path="res://scripts/poles.gd" id="4_wfnr8"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0lw5n"]
+atlas = ExtResource("2_dp8ca")
+region = Rect2(0, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dp8ca"]
+atlas = ExtResource("2_dp8ca")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2cgup"]
+atlas = ExtResource("2_dp8ca")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_2cgup"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0lw5n")
+}],
+"loop": true,
+"name": &"crawl",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dp8ca")
+}],
+"loop": true,
+"name": &"crouch",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2cgup")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_e2o6t"]
 radius = 30.565504
 
 [node name="Character" type="CharacterBody2D" unique_id=323876973]
-position = Vector2(23, 8)
 script = ExtResource("1_wa5vi")
 metadata/_edit_group_ = true
 
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1155604682]
-position = Vector2(183.25, 126.99999)
-scale = Vector2(0.50390625, 0.6249999)
-texture = ExtResource("2_wfnr8")
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1273842429]
+texture_filter = 1
+position = Vector2(183.5, 127)
+scale = Vector2(1.8437502, 2.3750002)
+sprite_frames = SubResource("SpriteFrames_2cgup")
+script = ExtResource("3_0lw5n")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1899640292]
 position = Vector2(183.5, 127)
