@@ -1,8 +1,8 @@
 extends CharacterBody2D
 @onready var sprite: Sprite2D = $"Sprite2D"
-
-
-const SPEED = 300
+@export_range(0.0, 180.0) var cone_angle_degrees := 45.0
+@export var normal_speed: float = 150.0
+@export var boosted_speed: float = 300.0
 
 #mouse look & shooting
 func _process(delta: float) -> void:
@@ -11,21 +11,16 @@ func _process(delta: float) -> void:
 
 #movement
 func _physics_process(delta: float) -> void:
-	if Input.is_action_pressed("w"):
-		velocity.y = -SPEED
-	if Input.is_action_pressed("s"):
-		velocity.y = SPEED
-	if Input.is_action_pressed("a"):
-		velocity.x = -SPEED
-	if Input.is_action_pressed("d"):
-		velocity.x = SPEED
-	if Input.is_action_just_released("w"):
-		velocity.y = move_toward(velocity.y, 0, SPEED)
-	if Input.is_action_just_released("s"):
-		velocity.y = move_toward(velocity.y, 0, SPEED)
-	if Input.is_action_just_released("a"):
-		velocity.x = move_toward(velocity.x, 0, SPEED)
-	if Input.is_action_just_released("d"):
-		velocity.x = move_toward(velocity.x, 0, SPEED)
+	var mouse_direction = global_position.direction_to(get_global_mouse_position())
+	var movement_direction := Input.get_vector("a","d", "s", "w")
+	var speed: float = normal_speed
+	
+	if movement_direction != Vector2.ZERO:
+		var cone_limit = cos(deg_to_rad(cone_angle_degrees))
+		var alignment: float = movement_direction.normalized().dot(mouse_direction)
+		
+		if alignment >= cone_limit:
+			speed = boosted_speed
 
+	velocity = movement_direction * speed
 	move_and_slide()
