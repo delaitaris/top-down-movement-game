@@ -3,7 +3,6 @@ extends CharacterBody2D
 @export_range(0.0, 180.0) var cone_angle_degrees := 60.0
 @export var normal_speed: float = 250.0
 @export var boosted_speed: float = 320.0
-@onready var Poles: Area2D = $"Poles"
 
 var north = false
 var south = false
@@ -20,7 +19,7 @@ func _physics_process(delta: float) -> void:
 	var mouse_direction = global_position.direction_to(get_global_mouse_position())
 	var movement_direction := Input.get_vector("a","d", "w", "s").normalized()
 	var speed: float = normal_speed
-	
+
 	if movement_direction != Vector2.ZERO:
 			if north and velocity.y < -100:
 				speed = boosted_speed
