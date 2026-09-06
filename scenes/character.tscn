@@ -2,10 +2,8 @@
 
 [ext_resource type="Script" uid="uid://nfn1x0pbhr5v" path="res://scripts/character.gd" id="1_wa5vi"]
 [ext_resource type="Texture2D" uid="uid://dvk7n6vvo4tlf" path="res://sprites/movement game player sprites.png" id="2_dp8ca"]
-[ext_resource type="Script" uid="uid://b4l0iga6446an" path="res://scenes/animated_sprite_2d.gd" id="3_0lw5n"]
+[ext_resource type="Script" uid="uid://b4l0iga6446an" path="res://scripts/animated_sprite_2d.gd" id="3_0lw5n"]
 [ext_resource type="Script" uid="uid://cuyaapx2vxu13" path="res://scripts/camera_2d.gd" id="3_px5sl"]
-[ext_resource type="Script" uid="uid://ctlyw3clbt8uk" path="res://scripts/poles.gd" id="4_wfnr8"]
-[ext_resource type="Script" uid="uid://dywpkl4w8rpwq" path="res://scenes/cpu_particles_2d.gd" id="6_0lw5n"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_0lw5n"]
 atlas = ExtResource("2_dp8ca")
@@ -55,8 +53,8 @@ metadata/_edit_group_ = true
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1273842429]
 texture_filter = 1
-position = Vector2(183.5, 127)
-scale = Vector2(1.8437502, 2.3750002)
+position = Vector2(201.50002, 128)
+scale = Vector2(3.0937498, 1.8750001)
 sprite_frames = SubResource("SpriteFrames_2cgup")
 script = ExtResource("3_0lw5n")
 
@@ -88,7 +86,6 @@ rotation = 3.1415925
 polygon = PackedVector2Array(-1012.99994, -603.0002, -183.99997, -126.000046, 633.00006, -602.9999)
 
 [node name="North" type="Area2D" parent="." unique_id=644745795]
-script = ExtResource("4_wfnr8")
 
 [node name="North" type="CollisionPolygon2D" parent="North" unique_id=1433856535]
 polygon = PackedVector2Array(-633, -323, 184, 127, 1013, -323)
@@ -99,12 +96,13 @@ position = Vector2(183, 125)
 emitting = false
 amount = 2
 lifetime = 0.2
+emission_shape = 1
+emission_sphere_radius = 10.1
 direction = Vector2(0, 0)
 spread = 60.0
 gravity = Vector2(0, 0)
 initial_velocity_min = 40.0
 initial_velocity_max = 80.0
-script = ExtResource("6_0lw5n")
 
 [connection signal="mouse_entered" from="West" to="." method="_on_west_mouse_entered"]
 [connection signal="mouse_exited" from="West" to="." method="_on_west_mouse_exited"]

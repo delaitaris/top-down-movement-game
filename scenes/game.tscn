@@ -13,6 +13,7 @@ size = Vector2(501, 217)
 [node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=1339583946]
 
 [node name="Sprite2D" type="Sprite2D" parent="StaticBody2D" unique_id=868637146]
+texture_filter = 1
 position = Vector2(665, 425)
 scale = Vector2(3.953125, 1.7734375)
 texture = ExtResource("2_lnu2h")
