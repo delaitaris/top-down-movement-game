@@ -2,9 +2,8 @@
 
 [ext_resource type="Script" uid="uid://nfn1x0pbhr5v" path="res://scripts/character.gd" id="1_wa5vi"]
 [ext_resource type="Texture2D" uid="uid://dvk7n6vvo4tlf" path="res://sprites/movement game player sprites.png" id="2_dp8ca"]
-[ext_resource type="Script" uid="uid://b4l0iga6446an" path="res://scenes/animated_sprite_2d.gd" id="3_0lw5n"]
+[ext_resource type="Script" uid="uid://b4l0iga6446an" path="res://scripts/animated_sprite_2d.gd" id="3_0lw5n"]
 [ext_resource type="Script" uid="uid://cuyaapx2vxu13" path="res://scripts/camera_2d.gd" id="3_px5sl"]
-[ext_resource type="Script" uid="uid://ctlyw3clbt8uk" path="res://scripts/poles.gd" id="4_wfnr8"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_0lw5n"]
 atlas = ExtResource("2_dp8ca")
@@ -54,8 +53,8 @@ metadata/_edit_group_ = true
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1273842429]
 texture_filter = 1
-position = Vector2(183.5, 127)
-scale = Vector2(1.8437502, 2.3750002)
+position = Vector2(201.50002, 128)
+scale = Vector2(3.0937498, 1.8750001)
 sprite_frames = SubResource("SpriteFrames_2cgup")
 script = ExtResource("3_0lw5n")
 
@@ -72,25 +71,38 @@ script = ExtResource("3_px5sl")
 [node name="West" type="Area2D" parent="." unique_id=1781346607]
 
 [node name="West" type="CollisionPolygon2D" parent="West" unique_id=796038272]
-polygon = PackedVector2Array(183, 126, -386, -184, -386, 464, 183, 127, 183, 126)
+polygon = PackedVector2Array(183, 126, -633, -323, -633, 603, 183, 127, 183, 126)
 
 [node name="East" type="Area2D" parent="." unique_id=1562087085]
 
 [node name="East" type="CollisionPolygon2D" parent="East" unique_id=15765953]
 rotation = 3.1415925
-polygon = PackedVector2Array(-765.99994, -464.00006, -766, 183.99992, -183.99998, -126.000015)
+polygon = PackedVector2Array(-1012.99994, -603.0002, -1013.00006, 322.99985, -183.99998, -126.000015)
 
 [node name="South" type="Area2D" parent="." unique_id=1014852938]
 
 [node name="South" type="CollisionPolygon2D" parent="South" unique_id=1696806098]
 rotation = 3.1415925
-polygon = PackedVector2Array(-765.99994, -464.00006, -183.99997, -126.000046, 386.00003, -463.99997)
+polygon = PackedVector2Array(-1012.99994, -603.0002, -183.99997, -126.000046, 633.00006, -602.9999)
 
 [node name="North" type="Area2D" parent="." unique_id=644745795]
-script = ExtResource("4_wfnr8")
 
 [node name="North" type="CollisionPolygon2D" parent="North" unique_id=1433856535]
-polygon = PackedVector2Array(-386, -184, 184, 127, 766, -184)
+polygon = PackedVector2Array(-633, -323, 184, 127, 1013, -323)
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="." unique_id=1422360855]
+texture_filter = 1
+position = Vector2(183, 125)
+emitting = false
+amount = 2
+lifetime = 0.2
+emission_shape = 1
+emission_sphere_radius = 10.1
+direction = Vector2(0, 0)
+spread = 60.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 40.0
+initial_velocity_max = 80.0
 
 [connection signal="mouse_entered" from="West" to="." method="_on_west_mouse_entered"]
 [connection signal="mouse_exited" from="West" to="." method="_on_west_mouse_exited"]

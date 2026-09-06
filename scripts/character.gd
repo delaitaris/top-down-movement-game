@@ -1,9 +1,9 @@
 extends CharacterBody2D
+@onready var particles: CPUParticles2D = $CPUParticles2D
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
 @export_range(0.0, 180.0) var cone_angle_degrees := 60.0
 @export var normal_speed: float = 250.0
 @export var boosted_speed: float = 320.0
-@onready var Poles: Area2D = $"Poles"
 
 var north = false
 var south = false
@@ -11,16 +11,16 @@ var east = false
 var west = false
 
 #mouse look & shooting
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	var mouse_pos = get_global_mouse_position()
 	sprite.look_at(mouse_pos)
 
 #movement
-func _physics_process(delta: float) -> void:
-	var mouse_direction = global_position.direction_to(get_global_mouse_position())
+func _physics_process(_delta: float) -> void:
+	var _mouse_direction = global_position.direction_to(get_global_mouse_position())
 	var movement_direction := Input.get_vector("a","d", "w", "s").normalized()
 	var speed: float = normal_speed
-	
+
 	if movement_direction != Vector2.ZERO:
 			if north and velocity.y < -100:
 				speed = boosted_speed
@@ -31,12 +31,15 @@ func _physics_process(delta: float) -> void:
 			if west and velocity.x < -100:
 				speed = boosted_speed
 
+	if speed == boosted_speed and movement_direction:
+		particles.emitting = true
+	else: 
+		particles.emitting = false
 	velocity = movement_direction * speed
 	move_and_slide()
 
 
 # POLES CHECKING
-
 
 #north
 func _on_north_mouse_entered() -> void:
