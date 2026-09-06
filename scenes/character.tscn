@@ -53,8 +53,8 @@ metadata/_edit_group_ = true
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1273842429]
 texture_filter = 1
-position = Vector2(201.50002, 128)
-scale = Vector2(3.0937498, 1.8750001)
+position = Vector2(183, 127.5)
+scale = Vector2(1.9374993, 1.9062501)
 sprite_frames = SubResource("SpriteFrames_2cgup")
 script = ExtResource("3_0lw5n")
 
@@ -64,7 +64,6 @@ shape = SubResource("CircleShape2D_e2o6t")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=314733650]
 offset = Vector2(190, 140)
-zoom = Vector2(0.5, 0.5)
 position_smoothing_enabled = true
 position_smoothing_speed = 7.0
 script = ExtResource("3_px5sl")
