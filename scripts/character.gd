@@ -1,4 +1,5 @@
 extends CharacterBody2D
+@onready var particles: CPUParticles2D = $CPUParticles2D
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
 @export_range(0.0, 180.0) var cone_angle_degrees := 60.0
 @export var normal_speed: float = 250.0
@@ -30,6 +31,10 @@ func _physics_process(delta: float) -> void:
 			if west and velocity.x < -100:
 				speed = boosted_speed
 
+	if speed == boosted_speed and movement_direction:
+		particles.emitting = true
+	else: 
+		particles.emitting = false
 	velocity = movement_direction * speed
 	move_and_slide()
 
