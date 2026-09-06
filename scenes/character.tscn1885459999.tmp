@@ -49,6 +49,7 @@ radius = 30.565504
 
 [node name="Character" type="CharacterBody2D" unique_id=323876973]
 script = ExtResource("1_wa5vi")
+cone_angle_degrees = null
 metadata/_edit_group_ = true
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1273842429]
