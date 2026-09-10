@@ -16,6 +16,7 @@ var current_stance = Stance.STANDING
 func _process(_delta: float) -> void:
 	var mouse_pos = get_global_mouse_position()
 	light.look_at(mouse_pos)
+	sprite.look_at(mouse_pos)
 	if current_stance == Stance.STANDING:
 		print("yes")
 #movement

@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://dvk7n6vvo4tlf" path="res://sprites/movement game player sprites.png" id="2_dp8ca"]
 [ext_resource type="Script" uid="uid://b4l0iga6446an" path="res://scripts/animated_sprite_2d.gd" id="3_0lw5n"]
 [ext_resource type="Script" uid="uid://cuyaapx2vxu13" path="res://scripts/camera_2d.gd" id="3_px5sl"]
-[ext_resource type="Texture2D" uid="uid://0glnptluhlvh" path="res://sprites/flashlight texture.png" id="5_dp8ca"]
+[ext_resource type="Texture2D" uid="uid://cggephp5thlko" path="res://sprites/better flashlight.png" id="5_dp8ca"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_0lw5n"]
 atlas = ExtResource("2_dp8ca")
@@ -107,13 +107,15 @@ initial_velocity_max = 80.0
 
 [node name="PointLight2D" type="PointLight2D" parent="." unique_id=180403817]
 texture_filter = 1
-position = Vector2(182.68752, 123.99997)
-scale = Vector2(13.34375, 13.0625)
+position = Vector2(184.20422, 124.00006)
+scale = Vector2(7.102112, 11.441176)
 range_item_cull_mask = 3
 shadow_enabled = true
+shadow_filter = 1
+shadow_filter_smooth = 0.1
 shadow_item_cull_mask = 3
 texture = ExtResource("5_dp8ca")
-offset = Vector2(30, 0)
+offset = Vector2(140, 0)
 
 [connection signal="mouse_entered" from="West" to="." method="_on_west_mouse_entered"]
 [connection signal="mouse_exited" from="West" to="." method="_on_west_mouse_exited"]
