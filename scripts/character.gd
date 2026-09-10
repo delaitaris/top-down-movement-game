@@ -1,6 +1,7 @@
 extends CharacterBody2D
 @onready var particles: CPUParticles2D = $CPUParticles2D
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
+@onready var light: PointLight2D = $PointLight2D
 @export_range(0.0, 180.0) var cone_angle_degrees := 60.0
 
 enum Stance {STANDING, CROUCHING, CRAWLING}
@@ -14,7 +15,7 @@ var current_stance = Stance.STANDING
 #mouse look & shooting
 func _process(_delta: float) -> void:
 	var mouse_pos = get_global_mouse_position()
-	sprite.look_at(mouse_pos)
+	light.look_at(mouse_pos)
 	if current_stance == Stance.STANDING:
 		print("yes")
 #movement

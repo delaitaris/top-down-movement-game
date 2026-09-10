@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://dvk7n6vvo4tlf" path="res://sprites/movement game player sprites.png" id="2_dp8ca"]
 [ext_resource type="Script" uid="uid://b4l0iga6446an" path="res://scripts/animated_sprite_2d.gd" id="3_0lw5n"]
 [ext_resource type="Script" uid="uid://cuyaapx2vxu13" path="res://scripts/camera_2d.gd" id="3_px5sl"]
+[ext_resource type="Texture2D" uid="uid://0glnptluhlvh" path="res://sprites/flashlight texture.png" id="5_dp8ca"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_0lw5n"]
 atlas = ExtResource("2_dp8ca")
@@ -46,14 +47,6 @@ animations = [{
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_e2o6t"]
 radius = 30.565504
-
-[sub_resource type="Gradient" id="Gradient_my7n2"]
-colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_dp8ca"]
-gradient = SubResource("Gradient_my7n2")
-fill = 1
-fill_from = Vector2(0.5, 0.5)
 
 [node name="Character" type="CharacterBody2D" unique_id=323876973]
 script = ExtResource("1_wa5vi")
@@ -112,13 +105,15 @@ gravity = Vector2(0, 0)
 initial_velocity_min = 40.0
 initial_velocity_max = 80.0
 
-[node name="PointLight2D" type="PointLight2D" parent="." unique_id=365348208]
-position = Vector2(181.99998, 126.499985)
-scale = Vector2(5.4687505, 6.734375)
-energy = 0.0
+[node name="PointLight2D" type="PointLight2D" parent="." unique_id=180403817]
+texture_filter = 1
+position = Vector2(182.68752, 123.99997)
+scale = Vector2(13.34375, 13.0625)
+range_item_cull_mask = 3
 shadow_enabled = true
-shadow_filter_smooth = 6.0
-texture = SubResource("GradientTexture2D_dp8ca")
+shadow_item_cull_mask = 3
+texture = ExtResource("5_dp8ca")
+offset = Vector2(30, 0)
 
 [connection signal="mouse_entered" from="West" to="." method="_on_west_mouse_entered"]
 [connection signal="mouse_exited" from="West" to="." method="_on_west_mouse_exited"]
