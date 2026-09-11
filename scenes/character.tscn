@@ -57,7 +57,7 @@ fill_from = Vector2(0.50438595, 0.50438595)
 fill_to = Vector2(0.80701756, 0.17105263)
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_dp8ca"]
-polygon = PackedVector2Array(-18, -2, -18, 1, 38.000015, 19.999985, 38.000015, 15.999985, -4, 0, 38, -14, 38, -16.000008)
+polygon = PackedVector2Array(-18, -2, -18, 1, 38.000015, 19.999985, 36.000015, 16.999985, -4, 0, 37, -16.000008, 38, -18.000008)
 
 [node name="Character" type="CharacterBody2D" unique_id=323876973]
 script = ExtResource("1_wa5vi")
@@ -104,7 +104,7 @@ polygon = PackedVector2Array(-633, -323, 184, 127, 1013, -323)
 
 [node name="PointLight2D" type="PointLight2D" parent="." unique_id=180403817]
 position = Vector2(183, 125)
-scale = Vector2(31.016, 25.14)
+scale = Vector2(33.976, 27.539)
 range_item_cull_mask = 3
 shadow_enabled = true
 shadow_filter = 1
