@@ -4,7 +4,6 @@
 [ext_resource type="Texture2D" uid="uid://dvk7n6vvo4tlf" path="res://sprites/movement game player sprites.png" id="2_dp8ca"]
 [ext_resource type="Script" uid="uid://b4l0iga6446an" path="res://scripts/animated_sprite_2d.gd" id="3_0lw5n"]
 [ext_resource type="Script" uid="uid://cuyaapx2vxu13" path="res://scripts/camera_2d.gd" id="3_px5sl"]
-[ext_resource type="Texture2D" uid="uid://cggephp5thlko" path="res://sprites/better flashlight.png" id="5_dp8ca"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_0lw5n"]
 atlas = ExtResource("2_dp8ca")
@@ -47,6 +46,18 @@ animations = [{
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_e2o6t"]
 radius = 30.565504
+
+[sub_resource type="Gradient" id="Gradient_my7n2"]
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_dp8ca"]
+gradient = SubResource("Gradient_my7n2")
+fill = 1
+fill_from = Vector2(0.50438595, 0.50438595)
+fill_to = Vector2(0.80701756, 0.17105263)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_dp8ca"]
+polygon = PackedVector2Array(-18, -2, -18, 1, 38.000015, 19.999985, 38.000015, 15.999985, -4, 0, 38, -14, 38, -16.000008)
 
 [node name="Character" type="CharacterBody2D" unique_id=323876973]
 script = ExtResource("1_wa5vi")
@@ -91,6 +102,17 @@ polygon = PackedVector2Array(-1012.99994, -603.0002, -183.99997, -126.000046, 63
 [node name="North" type="CollisionPolygon2D" parent="North" unique_id=1433856535]
 polygon = PackedVector2Array(-633, -323, 184, 127, 1013, -323)
 
+[node name="PointLight2D" type="PointLight2D" parent="." unique_id=180403817]
+position = Vector2(183, 125)
+scale = Vector2(31.016, 25.14)
+range_item_cull_mask = 3
+shadow_enabled = true
+shadow_filter = 1
+shadow_filter_smooth = 0.1
+shadow_item_cull_mask = 3
+texture = SubResource("GradientTexture2D_dp8ca")
+height = 1024.0
+
 [node name="CPUParticles2D" type="CPUParticles2D" parent="." unique_id=1422360855]
 texture_filter = 1
 position = Vector2(183, 122)
@@ -105,17 +127,10 @@ gravity = Vector2(0, 0)
 initial_velocity_min = 40.0
 initial_velocity_max = 80.0
 
-[node name="PointLight2D" type="PointLight2D" parent="." unique_id=180403817]
-texture_filter = 1
-position = Vector2(184.20422, 124.00006)
-scale = Vector2(7.102112, 11.441176)
-range_item_cull_mask = 3
-shadow_enabled = true
-shadow_filter = 1
-shadow_filter_smooth = 0.1
-shadow_item_cull_mask = 3
-texture = ExtResource("5_dp8ca")
-offset = Vector2(140, 0)
+[node name="LightOccluder2D" type="LightOccluder2D" parent="." unique_id=870300071]
+position = Vector2(183, 125)
+rotation = 6.2831855
+occluder = SubResource("OccluderPolygon2D_dp8ca")
 
 [connection signal="mouse_entered" from="West" to="." method="_on_west_mouse_entered"]
 [connection signal="mouse_exited" from="West" to="." method="_on_west_mouse_exited"]
