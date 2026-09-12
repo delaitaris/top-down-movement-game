@@ -3,7 +3,10 @@ extends CharacterBody2D
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var light: PointLight2D = $PointLight2D
 @onready var light2: LightOccluder2D = $LightOccluder2D
+@onready var muzzle: Marker2D = $Muzzle
 @export_range(0.0, 180.0) var cone_angle_degrees := 60.0
+@export var bullet_scene: PackedScene
+
 
 enum Stance {STANDING, CROUCHING, CRAWLING}
 
@@ -19,8 +22,8 @@ func _process(_delta: float) -> void:
 	light.look_at(mouse_pos)
 	light2.look_at(mouse_pos)
 	sprite.look_at(mouse_pos)
-	if current_stance == Stance.STANDING:
-		print("yes")
+	muzzle.look_at(mouse_pos)
+
 #movement
 func _physics_process(_delta: float) -> void:
 	var _mouse_direction = global_position.direction_to(get_global_mouse_position())
@@ -69,9 +72,6 @@ func _physics_process(_delta: float) -> void:
 	elif Input.is_action_just_pressed("raise height") and current_stance == Stance.CROUCHING:
 		current_stance = Stance.STANDING
 		print("standing")
-
-
-
 	move_and_slide()
 
 
@@ -101,3 +101,21 @@ func _on_east_mouse_entered() -> void:
 	east = true
 func _on_east_mouse_exited() -> void:
 	east = false
+
+
+
+func _unhandled_input(_event: InputEvent) -> void:
+	if Input.is_action_just_pressed("shoot"):
+		shoot()
+
+func shoot() -> void:
+	if not bullet_scene:
+		print("inspector bullet scene doofus")
+		return
+	
+	var bullet = bullet_scene.instantiate()
+	
+	bullet.global_position = muzzle.global_position
+	bullet.global_rotation = muzzle.global_rotation
+	
+	get_tree().current_scene.add_child(bullet)

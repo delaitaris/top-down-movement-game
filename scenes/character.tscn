@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://b601km7ojh1bo"]
 
 [ext_resource type="Script" uid="uid://nfn1x0pbhr5v" path="res://scripts/character.gd" id="1_wa5vi"]
+[ext_resource type="PackedScene" uid="uid://cry6ap8v0kobj" path="res://scenes/bullet.tscn" id="2_0lw5n"]
 [ext_resource type="Texture2D" uid="uid://dvk7n6vvo4tlf" path="res://sprites/movement game player sprites.png" id="2_dp8ca"]
 [ext_resource type="Script" uid="uid://b4l0iga6446an" path="res://scripts/animated_sprite_2d.gd" id="3_0lw5n"]
 [ext_resource type="Script" uid="uid://cuyaapx2vxu13" path="res://scripts/camera_2d.gd" id="3_px5sl"]
@@ -61,6 +62,7 @@ polygon = PackedVector2Array(-18, -2, -18, 1, 38.000015, 19.999985, 36.000015, 1
 
 [node name="Character" type="CharacterBody2D" unique_id=323876973]
 script = ExtResource("1_wa5vi")
+bullet_scene = ExtResource("2_0lw5n")
 metadata/_edit_group_ = true
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1273842429]
@@ -131,6 +133,9 @@ initial_velocity_max = 80.0
 position = Vector2(183, 125)
 rotation = 6.2831855
 occluder = SubResource("OccluderPolygon2D_dp8ca")
+
+[node name="Muzzle" type="Marker2D" parent="." unique_id=1852545678]
+position = Vector2(183, 125)
 
 [connection signal="mouse_entered" from="West" to="." method="_on_west_mouse_entered"]
 [connection signal="mouse_exited" from="West" to="." method="_on_west_mouse_exited"]

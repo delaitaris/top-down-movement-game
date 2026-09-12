@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://cry6ap8v0kobj"]
+
+[ext_resource type="Script" uid="uid://cl7b4f7s1fjqj" path="res://scripts/bullet.gd" id="1_v7oki"]
+
+[node name="Node2D" type="Node2D" unique_id=297855556]
+script = ExtResource("1_v7oki")
+
+[node name="Line2D" type="Line2D" parent="." unique_id=82175766]
