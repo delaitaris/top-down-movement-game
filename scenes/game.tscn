@@ -50,7 +50,7 @@ tile_map_data = PackedByteArray("AAAAAAMAAAAAAAAAAAADAAMAAAAAAAAAAAAEAAMAAAAAAAA
 tile_set = SubResource("TileSet_lnu2h")
 
 [node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=900697396]
-color = Color(0.16565639, 0.16565642, 0.16565636, 1)
+color = Color(0.15882859, 0.15906036, 0.15330431, 1)
 
 [node name="WallsGround" type="TileMapLayer" parent="." unique_id=229203416]
 light_mask = 2
