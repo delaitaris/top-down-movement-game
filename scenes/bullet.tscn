@@ -2,7 +2,17 @@
 
 [ext_resource type="Script" uid="uid://cl7b4f7s1fjqj" path="res://scripts/bullet.gd" id="1_v7oki"]
 
+[sub_resource type="Curve" id="Curve_mkf8s"]
+_data = [Vector2(0.010101005, 0), 0.0, 0.0, 0, 0, Vector2(0.25252524, 1), -1.2274321, 0.0, 0, 0, Vector2(1, 0.9887641), 0.0, 0.0, 0, 0]
+point_count = 3
+
 [node name="Node2D" type="Node2D" unique_id=297855556]
 script = ExtResource("1_v7oki")
 
 [node name="Line2D" type="Line2D" parent="." unique_id=82175766]
+width = 8.0
+width_curve = SubResource("Curve_mkf8s")
+default_color = Color(0.54036087, 0.4053232, 0.28355023, 1)
+joint_mode = 1
+begin_cap_mode = 2
+end_cap_mode = 2

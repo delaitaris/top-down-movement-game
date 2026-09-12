@@ -5,6 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://dvk7n6vvo4tlf" path="res://sprites/movement game player sprites.png" id="2_dp8ca"]
 [ext_resource type="Script" uid="uid://b4l0iga6446an" path="res://scripts/animated_sprite_2d.gd" id="3_0lw5n"]
 [ext_resource type="Script" uid="uid://cuyaapx2vxu13" path="res://scripts/camera_2d.gd" id="3_px5sl"]
+[ext_resource type="Texture2D" uid="uid://dcnwusatpaigl" path="res://sprites/2d_lights_and_shadows_neutral_point_light.webp" id="6_0lw5n"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_0lw5n"]
 atlas = ExtResource("2_dp8ca")
@@ -104,7 +105,7 @@ polygon = PackedVector2Array(-1012.99994, -603.0002, -183.99997, -126.000046, 63
 [node name="North" type="CollisionPolygon2D" parent="North" unique_id=1433856535]
 polygon = PackedVector2Array(-633, -323, 184, 127, 1013, -323)
 
-[node name="PointLight2D" type="PointLight2D" parent="." unique_id=180403817]
+[node name="Flashlight" type="PointLight2D" parent="." unique_id=180403817]
 position = Vector2(183, 125)
 scale = Vector2(33.976, 27.539)
 range_item_cull_mask = 3
@@ -133,9 +134,25 @@ initial_velocity_max = 80.0
 position = Vector2(183, 125)
 rotation = 6.2831855
 occluder = SubResource("OccluderPolygon2D_dp8ca")
+occluder_light_mask = 2
 
 [node name="Muzzle" type="Marker2D" parent="." unique_id=1852545678]
 position = Vector2(183, 125)
+
+[node name="Muzzleflash" type="PointLight2D" parent="." unique_id=1310414497]
+position = Vector2(183, 125)
+enabled = false
+color = Color(0.5411765, 0.40392157, 0.28235295, 1)
+energy = 3.0
+shadow_enabled = true
+shadow_filter = 1
+shadow_filter_smooth = 0.6
+texture = ExtResource("6_0lw5n")
+texture_scale = 5.0
+
+[node name="Timer" type="Timer" parent="Muzzleflash" unique_id=610225106]
+wait_time = 0.1
+one_shot = true
 
 [connection signal="mouse_entered" from="West" to="." method="_on_west_mouse_entered"]
 [connection signal="mouse_exited" from="West" to="." method="_on_west_mouse_exited"]
@@ -145,3 +162,4 @@ position = Vector2(183, 125)
 [connection signal="mouse_exited" from="South" to="." method="_on_south_mouse_exited"]
 [connection signal="mouse_entered" from="North" to="." method="_on_north_mouse_entered"]
 [connection signal="mouse_exited" from="North" to="." method="_on_north_mouse_exited"]
+[connection signal="timeout" from="Muzzleflash/Timer" to="." method="_on_timer_timeout"]

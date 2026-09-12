@@ -1,9 +1,12 @@
 extends CharacterBody2D
 @onready var particles: CPUParticles2D = $CPUParticles2D
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
-@onready var light: PointLight2D = $PointLight2D
-@onready var light2: LightOccluder2D = $LightOccluder2D
+@onready var light: PointLight2D = $Flashlight
+@onready var flashlightblock: LightOccluder2D = $LightOccluder2D
 @onready var muzzle: Marker2D = $Muzzle
+@onready var muzzleflash: PointLight2D = $Muzzleflash
+@onready var timerflash: Timer = $Muzzleflash/Timer
+
 @export_range(0.0, 180.0) var cone_angle_degrees := 60.0
 @export var bullet_scene: PackedScene
 
@@ -16,11 +19,15 @@ var east = false
 var west = false
 var current_stance = Stance.STANDING
 
+func _ready() -> void:
+	muzzleflash.shadow_enabled = true
+
+
 #mouse look & shooting
 func _process(_delta: float) -> void:
 	var mouse_pos = get_global_mouse_position()
 	light.look_at(mouse_pos)
-	light2.look_at(mouse_pos)
+	flashlightblock.look_at(mouse_pos)
 	sprite.look_at(mouse_pos)
 	muzzle.look_at(mouse_pos)
 
@@ -109,6 +116,13 @@ func _unhandled_input(_event: InputEvent) -> void:
 		shoot()
 
 func shoot() -> void:
+	$Muzzleflash.texture_scale = randf_range(4, 6)
+	$Muzzleflash.energy = randf_range(1.5, 2.5)
+	
+	
+	muzzleflash.enabled = true
+	timerflash.start()
+	
 	if not bullet_scene:
 		print("inspector bullet scene doofus")
 		return
@@ -119,3 +133,6 @@ func shoot() -> void:
 	bullet.global_rotation = muzzle.global_rotation
 	
 	get_tree().current_scene.add_child(bullet)
+
+func _on_timer_timeout() -> void:
+	muzzleflash.enabled = false
