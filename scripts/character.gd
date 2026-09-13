@@ -2,10 +2,11 @@ extends CharacterBody2D
 @onready var particles: CPUParticles2D = $CPUParticles2D
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var light: PointLight2D = $Flashlight
-@onready var flashlightblock: LightOccluder2D = $LightOccluder2D
+@onready var flashlightblock: LightOccluder2D = $FlashlightOccluder
 @onready var muzzle: Marker2D = $Muzzle
 @onready var muzzleflash: PointLight2D = $Muzzleflash
 @onready var timerflash: Timer = $Muzzleflash/Timer
+@onready var muzzleblock: LightOccluder2D = $MuzzleOccluder
 
 @export_range(0.0, 180.0) var cone_angle_degrees := 60.0
 @export var bullet_scene: PackedScene
@@ -18,6 +19,7 @@ var south = false
 var east = false
 var west = false
 var current_stance = Stance.STANDING
+var pistolmag = 9
 
 func _ready() -> void:
 	muzzleflash.shadow_enabled = true
@@ -30,6 +32,7 @@ func _process(_delta: float) -> void:
 	flashlightblock.look_at(mouse_pos)
 	sprite.look_at(mouse_pos)
 	muzzle.look_at(mouse_pos)
+	muzzleblock.look_at(mouse_pos)
 
 #movement
 func _physics_process(_delta: float) -> void:
@@ -114,25 +117,39 @@ func _on_east_mouse_exited() -> void:
 func _unhandled_input(_event: InputEvent) -> void:
 	if Input.is_action_just_pressed("shoot"):
 		shoot()
+		pistolmag -= 1
+		if pistolmag <= 0:
+			pistolmag = 0
+	if Input.is_action_just_pressed("reload"):
+		reload()
 
 func shoot() -> void:
+	var bullet = bullet_scene.instantiate()
+	
+	
 	$Muzzleflash.texture_scale = randf_range(4, 6)
 	$Muzzleflash.energy = randf_range(1.5, 2.5)
 	
-	
-	muzzleflash.enabled = true
-	timerflash.start()
+	if pistolmag != 0:
+		muzzleflash.enabled = true
+		timerflash.start()
 	
 	if not bullet_scene:
-		print("inspector bullet scene doofus")
 		return
-	
-	var bullet = bullet_scene.instantiate()
 	
 	bullet.global_position = muzzle.global_position
 	bullet.global_rotation = muzzle.global_rotation
 	
-	get_tree().current_scene.add_child(bullet)
+	
+	if pistolmag != 0:
+		get_tree().current_scene.add_child(bullet)
 
 func _on_timer_timeout() -> void:
 	muzzleflash.enabled = false
+
+func reload() -> void:
+	if pistolmag < 9:
+		print("reloaded")
+		pistolmag = 9
+	else:
+		return
