@@ -7,6 +7,11 @@ extends CharacterBody2D
 @onready var muzzleflash: PointLight2D = $Muzzleflash
 @onready var timerflash: Timer = $Muzzleflash/Timer
 @onready var muzzleblock: LightOccluder2D = $MuzzleOccluder
+@onready var lightdarkentimer: Timer = $LightDarkener
+@onready var lightdarkencanvas: CanvasModulate = $LightDarkener/CanvasModulate
+@onready var flashlight_toggle: PointLight2D = $Flashlight
+@onready var reloadtimer: Timer = $Muzzle/Reload
+@onready var pistolreloadsfx: AudioStreamPlayer2D = $PistolReload
 
 @export_range(0.0, 180.0) var cone_angle_degrees := 60.0
 @export var bullet_scene: PackedScene
@@ -40,7 +45,6 @@ func _physics_process(_delta: float) -> void:
 	var movement_direction := Input.get_vector("a","d", "w", "s").normalized()
 	var speed: float = 250.0
 	var boosted_speed: = speed * 1.8
-
 	if movement_direction != Vector2.ZERO:
 		if current_stance == Stance.STANDING:
 			speed = speed
@@ -51,7 +55,6 @@ func _physics_process(_delta: float) -> void:
 		else:
 			speed = 50.0
 			boosted_speed = speed * 1.8
-
 		if north and velocity.y < 0:
 			speed = boosted_speed
 		if south and velocity.y > 0:
@@ -60,13 +63,11 @@ func _physics_process(_delta: float) -> void:
 			speed = boosted_speed
 		if west and velocity.x < 0:
 			speed = boosted_speed
-
 	if speed == boosted_speed and movement_direction:
 		particles.emitting = true
 	else: 
 		particles.emitting = false
 	velocity = movement_direction * speed
-
 
 #standing -> crouching -> crawling toggle
 	if Input.is_action_just_pressed("lower height") and current_stance == Stance.STANDING:
@@ -83,7 +84,6 @@ func _physics_process(_delta: float) -> void:
 		current_stance = Stance.STANDING
 		print("standing")
 	move_and_slide()
-
 
 # POLES CHECKING
 
@@ -112,8 +112,6 @@ func _on_east_mouse_entered() -> void:
 func _on_east_mouse_exited() -> void:
 	east = false
 
-
-
 func _unhandled_input(_event: InputEvent) -> void:
 	if Input.is_action_just_pressed("shoot"):
 		shoot()
@@ -122,34 +120,45 @@ func _unhandled_input(_event: InputEvent) -> void:
 			pistolmag = 0
 	if Input.is_action_just_pressed("reload"):
 		reload()
+	if Input.is_action_just_pressed("flashlight"):
+		flashlight()
 
 func shoot() -> void:
 	var bullet = bullet_scene.instantiate()
 	
-	
 	$Muzzleflash.texture_scale = randf_range(4, 6)
 	$Muzzleflash.energy = randf_range(1.5, 2.5)
-	
 	if pistolmag != 0:
 		muzzleflash.enabled = true
 		timerflash.start()
-	
 	if not bullet_scene:
 		return
-	
 	bullet.global_position = muzzle.global_position
 	bullet.global_rotation = muzzle.global_rotation
-	
-	
 	if pistolmag != 0:
 		get_tree().current_scene.add_child(bullet)
 
-func _on_timer_timeout() -> void:
-	muzzleflash.enabled = false
+func flashlight() -> void:
+	if flashlight_toggle.enabled == false:
+		flashlight_toggle.enabled = true
+	else:
+		flashlight_toggle.enabled = false
 
 func reload() -> void:
 	if pistolmag < 9:
-		print("reloaded")
-		pistolmag = 9
+		reloadtimer.start()
+		if pistolreloadsfx.playing == false:
+			pistolreloadsfx.play()
 	else:
 		return
+
+func _on_timer_timeout() -> void:
+	muzzleflash.enabled = false
+	lightdarkentimer.start()
+	lightdarkencanvas.color = Color(0.115, 0.115, 0.115, 1.0)
+
+func _on_light_darkener_timeout() -> void:
+	lightdarkencanvas.color = Color(0.161, 0.161, 0.153, 1.0)
+
+func _on_reload_timeout() -> void:
+	pistolmag = 9

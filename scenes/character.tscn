@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://b4l0iga6446an" path="res://scripts/animated_sprite_2d.gd" id="3_0lw5n"]
 [ext_resource type="Script" uid="uid://cuyaapx2vxu13" path="res://scripts/camera_2d.gd" id="3_px5sl"]
 [ext_resource type="Texture2D" uid="uid://dcnwusatpaigl" path="res://sprites/2d_lights_and_shadows_neutral_point_light.webp" id="6_0lw5n"]
+[ext_resource type="AudioStream" uid="uid://dfoj0gqgkvvic" path="res://sfx/pistol reload.mp3" id="7_2cgup"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_0lw5n"]
 atlas = ExtResource("2_dp8ca")
@@ -108,18 +109,6 @@ polygon = PackedVector2Array(-1012.99994, -603.0002, -183.99997, -126.000046, 63
 [node name="North" type="CollisionPolygon2D" parent="North" unique_id=1433856535]
 polygon = PackedVector2Array(-633, -323, 184, 127, 1013, -323)
 
-[node name="Flashlight" type="PointLight2D" parent="." unique_id=180403817]
-position = Vector2(183, 125)
-scale = Vector2(33.976, 27.539)
-range_item_cull_mask = 3
-shadow_enabled = true
-shadow_filter = 2
-shadow_filter_smooth = 0.6
-shadow_item_cull_mask = 3
-texture = SubResource("GradientTexture2D_dp8ca")
-offset = Vector2(8, 0)
-height = 1024.0
-
 [node name="CPUParticles2D" type="CPUParticles2D" parent="." unique_id=1422360855]
 texture_filter = 1
 position = Vector2(183, 122)
@@ -134,6 +123,18 @@ gravity = Vector2(0, 0)
 initial_velocity_min = 40.0
 initial_velocity_max = 80.0
 
+[node name="Flashlight" type="PointLight2D" parent="." unique_id=180403817]
+position = Vector2(183, 125)
+scale = Vector2(33.976, 27.539)
+range_item_cull_mask = 3
+shadow_enabled = true
+shadow_filter = 2
+shadow_filter_smooth = 0.6
+shadow_item_cull_mask = 3
+texture = SubResource("GradientTexture2D_dp8ca")
+offset = Vector2(8, 0)
+height = 1024.0
+
 [node name="FlashlightOccluder" type="LightOccluder2D" parent="." unique_id=870300071]
 position = Vector2(183, 125)
 rotation = 6.2831855
@@ -142,6 +143,10 @@ occluder_light_mask = 2
 
 [node name="Muzzle" type="Marker2D" parent="." unique_id=1852545678]
 position = Vector2(183, 125)
+
+[node name="Reload" type="Timer" parent="Muzzle" unique_id=523596306]
+wait_time = 2.0
+one_shot = true
 
 [node name="Muzzleflash" type="PointLight2D" parent="." unique_id=1310414497]
 position = Vector2(183, 125)
@@ -163,6 +168,16 @@ position = Vector2(183, 125)
 occluder = SubResource("OccluderPolygon2D_0lw5n")
 occluder_light_mask = 3
 
+[node name="LightDarkener" type="Timer" parent="." unique_id=1211812934]
+wait_time = 0.05
+one_shot = true
+
+[node name="CanvasModulate" type="CanvasModulate" parent="LightDarkener" unique_id=1396223506]
+color = Color(0.19877312, 0.19877347, 0.18961895, 1)
+
+[node name="PistolReload" type="AudioStreamPlayer2D" parent="." unique_id=1287440510]
+stream = ExtResource("7_2cgup")
+
 [connection signal="mouse_entered" from="West" to="." method="_on_west_mouse_entered"]
 [connection signal="mouse_exited" from="West" to="." method="_on_west_mouse_exited"]
 [connection signal="mouse_entered" from="East" to="." method="_on_east_mouse_entered"]
@@ -171,4 +186,6 @@ occluder_light_mask = 3
 [connection signal="mouse_exited" from="South" to="." method="_on_south_mouse_exited"]
 [connection signal="mouse_entered" from="North" to="." method="_on_north_mouse_entered"]
 [connection signal="mouse_exited" from="North" to="." method="_on_north_mouse_exited"]
+[connection signal="timeout" from="Muzzle/Reload" to="." method="_on_reload_timeout"]
 [connection signal="timeout" from="Muzzleflash/Timer" to="." method="_on_timer_timeout"]
+[connection signal="timeout" from="LightDarkener" to="." method="_on_light_darkener_timeout"]

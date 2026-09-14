@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://dfoj0gqgkvvic"
+path="res://.godot/imported/pistol reload.mp3-0f2c6c555e15333253543bed3ec12ea0.mp3str"
+
+[deps]
+
+source_file="res://sfx/pistol reload.mp3"
+dest_files=["res://.godot/imported/pistol reload.mp3-0f2c6c555e15333253543bed3ec12ea0.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4
