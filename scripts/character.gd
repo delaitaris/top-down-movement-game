@@ -12,6 +12,8 @@ extends CharacterBody2D
 @onready var flashlight_toggle: PointLight2D = $Flashlight
 @onready var reloadtimer: Timer = $Muzzle/Reload
 @onready var pistolreloadsfx: AudioStreamPlayer2D = $PistolReload
+@onready var pistolshootcooldown: Timer = $Muzzle/ShootCooldown
+
 
 @export_range(0.0, 180.0) var cone_angle_degrees := 60.0
 @export var bullet_scene: PackedScene
@@ -24,7 +26,9 @@ var south = false
 var east = false
 var west = false
 var current_stance = Stance.STANDING
-var pistolmag = 9
+var pistolmag = 7
+var shootcooldown = false
+var reloading = false
 
 func _ready() -> void:
 	muzzleflash.shadow_enabled = true
@@ -113,11 +117,13 @@ func _on_east_mouse_exited() -> void:
 	east = false
 
 func _unhandled_input(_event: InputEvent) -> void:
-	if Input.is_action_just_pressed("shoot"):
-		shoot()
-		pistolmag -= 1
-		if pistolmag <= 0:
-			pistolmag = 0
+	if Input.is_action_just_pressed("shoot") and !shootcooldown and !reloading:
+			shoot()
+			pistolmag -= 1
+			if pistolmag <= 0:
+				pistolmag = 0
+			pistolshootcooldown.start()
+			shootcooldown = true
 	if Input.is_action_just_pressed("reload"):
 		reload()
 	if Input.is_action_just_pressed("flashlight"):
@@ -145,7 +151,8 @@ func flashlight() -> void:
 		flashlight_toggle.enabled = false
 
 func reload() -> void:
-	if pistolmag < 9:
+	if pistolmag < 7:
+		reloading = true
 		reloadtimer.start()
 		if pistolreloadsfx.playing == false:
 			pistolreloadsfx.play()
@@ -161,4 +168,8 @@ func _on_light_darkener_timeout() -> void:
 	lightdarkencanvas.color = Color(0.161, 0.161, 0.153, 1.0)
 
 func _on_reload_timeout() -> void:
-	pistolmag = 9
+	pistolmag = 7
+	reloading = false
+
+func _on_shoot_cooldown_timeout() -> void:
+	shootcooldown = false

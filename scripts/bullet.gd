@@ -1,5 +1,5 @@
 extends Node2D
-@onready var speed: float = 10000.0
+@onready var speed: float = 14000.0
 @onready var damage: float = 35.0
 @onready var max_lifetime: float = 4.0
 @onready var line_2d: Line2D = $Line2D
@@ -43,7 +43,7 @@ func _process(delta: float) -> void:
 		queue_free()
 
 func update_tracer(_movement_step: Vector2) -> void:
-	var current_length = min(300, total_distance_traveled)
+	var current_length = min(200, total_distance_traveled)
 
 	line_2d.set_point_position(1, Vector2.ZERO)
 	line_2d.set_point_position(0, Vector2(-current_length, 0.0)) #change for differing length of tracer
@@ -53,6 +53,5 @@ func handle_collision(result: Dictionary) -> void:
 	
 	if collider.has_method("take_damage"):
 		collider.take_damage(damage)
-		
 	
 	queue_free()

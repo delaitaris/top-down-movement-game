@@ -63,7 +63,7 @@ fill_to = Vector2(0.80701756, 0.17105263)
 polygon = PackedVector2Array(-18, -2, -18, 1, 38.000015, 19.999985, 36.000015, 16.999985, -4, 0, 37, -16.000008, 38, -18.000008)
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_0lw5n"]
-polygon = PackedVector2Array(-22, -19, -22, 23, -26, 17, -26, -14)
+polygon = PackedVector2Array(-22, -14, -22, 17, -26, 17, -26, -14)
 
 [node name="Character" type="CharacterBody2D" unique_id=323876973]
 script = ExtResource("1_wa5vi")
@@ -90,24 +90,24 @@ script = ExtResource("3_px5sl")
 [node name="West" type="Area2D" parent="." unique_id=1781346607]
 
 [node name="West" type="CollisionPolygon2D" parent="West" unique_id=796038272]
-polygon = PackedVector2Array(183, 126, -633, -323, -633, 603, 183, 127, 183, 126)
+polygon = PackedVector2Array(183, 126, -1487, -787, -1486, 1138, 183, 127, 183, 126)
 
 [node name="East" type="Area2D" parent="." unique_id=1562087085]
 
 [node name="East" type="CollisionPolygon2D" parent="East" unique_id=15765953]
 rotation = 3.1415925
-polygon = PackedVector2Array(-1012.99994, -603.0002, -1013.00006, 322.99985, -183.99998, -126.000015)
+polygon = PackedVector2Array(-1877.9999, -1145.0002, -1878.0001, 785.9997, -183.99998, -126.000015)
 
 [node name="South" type="Area2D" parent="." unique_id=1014852938]
 
 [node name="South" type="CollisionPolygon2D" parent="South" unique_id=1696806098]
 rotation = 3.1415925
-polygon = PackedVector2Array(-1012.99994, -603.0002, -183.99997, -126.000046, 633.00006, -602.9999)
+polygon = PackedVector2Array(-1883.9999, -1138.0002, -183.99997, -126.000046, 1486.0001, -1137.9998)
 
 [node name="North" type="Area2D" parent="." unique_id=644745795]
 
 [node name="North" type="CollisionPolygon2D" parent="North" unique_id=1433856535]
-polygon = PackedVector2Array(-633, -323, 184, 127, 1013, -323)
+polygon = PackedVector2Array(-1485, -786, 184, 127, 1879, -787)
 
 [node name="CPUParticles2D" type="CPUParticles2D" parent="." unique_id=1422360855]
 texture_filter = 1
@@ -146,6 +146,10 @@ position = Vector2(183, 125)
 
 [node name="Reload" type="Timer" parent="Muzzle" unique_id=523596306]
 wait_time = 2.0
+one_shot = true
+
+[node name="ShootCooldown" type="Timer" parent="Muzzle" unique_id=335461975]
+wait_time = 0.05
 one_shot = true
 
 [node name="Muzzleflash" type="PointLight2D" parent="." unique_id=1310414497]
@@ -187,5 +191,6 @@ stream = ExtResource("7_2cgup")
 [connection signal="mouse_entered" from="North" to="." method="_on_north_mouse_entered"]
 [connection signal="mouse_exited" from="North" to="." method="_on_north_mouse_exited"]
 [connection signal="timeout" from="Muzzle/Reload" to="." method="_on_reload_timeout"]
+[connection signal="timeout" from="Muzzle/ShootCooldown" to="." method="_on_shoot_cooldown_timeout"]
 [connection signal="timeout" from="Muzzleflash/Timer" to="." method="_on_timer_timeout"]
 [connection signal="timeout" from="LightDarkener" to="." method="_on_light_darkener_timeout"]
