@@ -149,7 +149,6 @@ wait_time = 2.0
 one_shot = true
 
 [node name="ShootCooldown" type="Timer" parent="Muzzle" unique_id=335461975]
-wait_time = 0.05
 one_shot = true
 
 [node name="Muzzleflash" type="PointLight2D" parent="." unique_id=1310414497]
