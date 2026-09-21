@@ -14,7 +14,6 @@ extends CharacterBody2D
 @onready var pistolreloadsfx: AudioStreamPlayer2D = $PistolReload
 @onready var pistolshootcooldown: Timer = $Muzzle/ShootCooldown
 
-
 @export_range(0.0, 180.0) var cone_angle_degrees := 60.0
 @export var bullet_scene: PackedScene
 
@@ -29,8 +28,14 @@ var current_stance = Stance.STANDING
 var shootcooldown = false
 var reloading = false
 var cooldowntime = 1
-var current_gun = Gun.PISTOL
-var magazine = 1
+var current_gun = Gun.UNARMED
+var pistolmagazine = 1
+var pistolmagazinemax = 1
+var riflemagazine = 1
+var riflemagazinemax = 1
+var shotgunmagazine = 1
+var shotgunmagazinemax = 1
+
 
 func _ready() -> void:
 	muzzleflash.shadow_enabled = true
@@ -43,13 +48,15 @@ func _process(_delta: float) -> void:
 	sprite.look_at(mouse_pos)
 	muzzle.look_at(mouse_pos)
 	muzzleblock.look_at(mouse_pos)
-
 	if current_gun == Gun.PISTOL:
 		cooldowntime = 0.2
 	if current_gun == Gun.RIFLE:
-		cooldowntime = 0.1
+		cooldowntime = 0.8
 	if current_gun == Gun.SHOTGUN:
 		cooldowntime = 0.8
+
+	if Input.is_action_pressed("shoot") and !shootcooldown and !reloading and current_gun == Gun.RIFLE:
+		shoot_auto()
 
 #movement
 func _physics_process(_delta: float) -> void:
@@ -125,28 +132,21 @@ func _on_east_mouse_exited() -> void:
 	east = false
 
 func _unhandled_input(_event: InputEvent) -> void:
-	if Input.is_action_just_pressed("shoot") and !shootcooldown and !reloading:
+	if Input.is_action_just_pressed("shoot") and !shootcooldown and !reloading and current_gun != Gun.RIFLE:
 		if current_gun == Gun.PISTOL:
 			shoot()
-			magazine -= 1
-			if magazine <= 0:
-				magazine = 0
+			pistolmagazine -= 1
+			if pistolmagazine <= 0:
+				pistolmagazine = 0
 			pistolshootcooldown.start(cooldowntime)
 			shootcooldown = true
 		if current_gun == Gun.SHOTGUN:
 			shoot()
-			magazine -= 1
-			if magazine <= 0:
-				magazine = 0
+			shotgunmagazine -= 1
+			if shotgunmagazine <= 0:
+				shotgunmagazine = 0
 			pistolshootcooldown.start(cooldowntime)
 			shootcooldown = true
-	elif Input.is_action_pressed("shoot") and !shootcooldown and !reloading and current_gun == Gun.RIFLE:
-		shoot()
-		magazine -= 1
-		if magazine <= 0:
-			magazine = 0
-		pistolshootcooldown.start(cooldowntime)
-		shootcooldown = true
 	else:
 		pass
 
@@ -158,16 +158,17 @@ func _unhandled_input(_event: InputEvent) -> void:
 	
 	if Input.is_action_just_pressed("1"):
 		current_gun = Gun.UNARMED
-		magazine = 0
+		shootcooldown = true
 	elif Input.is_action_just_pressed("2"):
 		current_gun = Gun.PISTOL
-		magazine = 7
+		shootcooldown = false
+		pistolmagazinemax = 7
 	elif Input.is_action_just_pressed("3"):
 		current_gun = Gun.RIFLE
-		magazine = 30
+		riflemagazinemax = 30
 	elif Input.is_action_just_pressed("4"):
 		current_gun = Gun.SHOTGUN
-		magazine = 5
+		shotgunmagazinemax = 5
 
 
 func shoot() -> void:
@@ -175,17 +176,38 @@ func shoot() -> void:
 	$Muzzleflash.texture_scale = randf_range(4, 6)
 	$Muzzleflash.energy = randf_range(1.5, 2.5)
 	
-	if magazine != 0:
+	if pistolmagazine != 0:
+		muzzleflash.enabled = true
+		timerflash.start()
+	if shotgunmagazine != 0:
 		muzzleflash.enabled = true
 		timerflash.start()
 	if not bullet_scene:
 		return
 	bullet.global_position = muzzle.global_position
 	bullet.global_rotation = muzzle.global_rotation
-	if magazine != 0:
+	if pistolmagazine != 0 and current_gun != Gun.RIFLE:
+		get_tree().current_scene.add_child(bullet)
+	if shotgunmagazine != 0 and current_gun != Gun.RIFLE:
 		get_tree().current_scene.add_child(bullet)
 
-
+func shoot_auto() -> void:
+	var bullet = bullet_scene.instantiate()
+	if current_gun == Gun.RIFLE and riflemagazine != 0:
+		pistolshootcooldown.wait_time = 0.1
+		pistolshootcooldown.start()
+		muzzleflash.enabled = true
+		timerflash.start()
+	if not bullet_scene:
+		return
+	bullet.global_position = muzzle.global_position
+	bullet.global_rotation = muzzle.global_rotation
+	if riflemagazine != 0 and shootcooldown == false:
+		riflemagazine -= 1
+		shootcooldown = true
+		get_tree().current_scene.add_child(bullet)
+	
+	
 func flashlight() -> void:
 	if flashlight_toggle.enabled == false:
 		flashlight_toggle.enabled = true
@@ -194,19 +216,19 @@ func flashlight() -> void:
 
 func reload() -> void:
 	if current_gun == Gun.PISTOL:
-		if magazine < 7:
+		if pistolmagazine < 7:
 			reloading = true
 			reloadtimer.start()
 			if pistolreloadsfx.playing == false:
 				pistolreloadsfx.play()
 	if current_gun == Gun.RIFLE:
-		if magazine < 30:
+		if pistolmagazine < 30:
 			reloading = true
 			reloadtimer.start()
 			if pistolreloadsfx.playing == false:
 				pistolreloadsfx.play()
 	if current_gun == Gun.SHOTGUN:
-		if magazine < 5:
+		if pistolmagazine < 5:
 			reloading = true
 			reloadtimer.start()
 			if pistolreloadsfx.playing == false:
@@ -217,18 +239,18 @@ func reload() -> void:
 func _on_timer_timeout() -> void:
 	muzzleflash.enabled = false
 	lightdarkentimer.start()
-	lightdarkencanvas.color = Color(0.115, 0.115, 0.115, 1.0)
+	lightdarkencanvas.color = Color(Color(0.2, 0.2, 0.188))
 
 func _on_light_darkener_timeout() -> void:
-	lightdarkencanvas.color = Color(0.161, 0.161, 0.153, 1.0)
+	lightdarkencanvas.color = Color(Color(0.2, 0.2, 0.188))
 
 func _on_reload_timeout() -> void:
 	if current_gun == Gun.PISTOL:
-		magazine = 7
+		pistolmagazine = pistolmagazinemax
 	if current_gun == Gun.RIFLE:
-		magazine = 30
+		riflemagazine = riflemagazinemax
 	if current_gun == Gun.SHOTGUN:
-		magazine = 5
+		shotgunmagazine = shotgunmagazinemax
 	reloading = false
 
 func _on_shoot_cooldown_timeout() -> void:

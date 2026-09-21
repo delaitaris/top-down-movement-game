@@ -176,7 +176,7 @@ wait_time = 0.05
 one_shot = true
 
 [node name="CanvasModulate" type="CanvasModulate" parent="LightDarkener" unique_id=1396223506]
-color = Color(0.19877312, 0.19877347, 0.18961895, 1)
+color = Color(0.2, 0.2, 0.188, 1)
 
 [node name="PistolReload" type="AudioStreamPlayer2D" parent="." unique_id=1287440510]
 stream = ExtResource("7_2cgup")
