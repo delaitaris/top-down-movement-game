@@ -29,11 +29,11 @@ var shootcooldown = false
 var reloading = false
 var cooldowntime = 1
 var current_gun = Gun.UNARMED
-var pistolmagazine = 1
+var pistolmagazine = 7
 var pistolmagazinemax = 1
-var riflemagazine = 1
+var riflemagazine = 30
 var riflemagazinemax = 1
-var shotgunmagazine = 1
+var shotgunmagazine = 5
 var shotgunmagazinemax = 1
 
 
@@ -51,7 +51,7 @@ func _process(_delta: float) -> void:
 	if current_gun == Gun.PISTOL:
 		cooldowntime = 0.2
 	if current_gun == Gun.RIFLE:
-		cooldowntime = 0.8
+		cooldowntime = 0.1
 	if current_gun == Gun.SHOTGUN:
 		cooldowntime = 0.8
 
@@ -136,6 +136,7 @@ func _unhandled_input(_event: InputEvent) -> void:
 		if current_gun == Gun.PISTOL:
 			shoot()
 			pistolmagazine -= 1
+			print(pistolmagazine)
 			if pistolmagazine <= 0:
 				pistolmagazine = 0
 			pistolshootcooldown.start(cooldowntime)
@@ -161,7 +162,6 @@ func _unhandled_input(_event: InputEvent) -> void:
 		shootcooldown = true
 	elif Input.is_action_just_pressed("2"):
 		current_gun = Gun.PISTOL
-		shootcooldown = false
 		pistolmagazinemax = 7
 	elif Input.is_action_just_pressed("3"):
 		current_gun = Gun.RIFLE
@@ -172,29 +172,39 @@ func _unhandled_input(_event: InputEvent) -> void:
 
 
 func shoot() -> void:
-	var bullet = bullet_scene.instantiate()
-	$Muzzleflash.texture_scale = randf_range(4, 6)
-	$Muzzleflash.energy = randf_range(1.5, 2.5)
-	
-	if pistolmagazine != 0:
-		muzzleflash.enabled = true
-		timerflash.start()
-	if shotgunmagazine != 0:
-		muzzleflash.enabled = true
-		timerflash.start()
 	if not bullet_scene:
 		return
-	bullet.global_position = muzzle.global_position
-	bullet.global_rotation = muzzle.global_rotation
-	if pistolmagazine != 0 and current_gun != Gun.RIFLE:
+
+	# 1. PISTOL CHECK: Must be holding the pistol AND have ammo
+	if current_gun == Gun.PISTOL and pistolmagazine > 0:
+		$Muzzleflash.texture_scale = randf_range(4, 6)
+		$Muzzleflash.energy = randf_range(1.5, 2.5)
+		muzzleflash.enabled = true
+		timerflash.start()
+		
+		# Only instantiate the bullet if we pass the ammo check
+		var bullet = bullet_scene.instantiate()
+		bullet.global_position = muzzle.global_position
+		bullet.global_rotation = muzzle.global_rotation
 		get_tree().current_scene.add_child(bullet)
-	if shotgunmagazine != 0 and current_gun != Gun.RIFLE:
+
+	# 2. SHOTGUN CHECK: Must be holding the shotgun AND have ammo
+	elif current_gun == Gun.SHOTGUN and shotgunmagazine > 0:
+		$Muzzleflash.texture_scale = randf_range(4, 6)
+		$Muzzleflash.energy = randf_range(1.5, 2.5)
+		muzzleflash.enabled = true
+		timerflash.start()
+		
+		# For a shotgun, we run a loop to spawn multiple pellets at once
+		var bullet = bullet_scene.instantiate()
+		bullet.global_position = muzzle.global_position
+		bullet.global_rotation = muzzle.global_rotation
 		get_tree().current_scene.add_child(bullet)
 
 func shoot_auto() -> void:
 	var bullet = bullet_scene.instantiate()
 	if current_gun == Gun.RIFLE and riflemagazine != 0:
-		pistolshootcooldown.wait_time = 0.1
+		pistolshootcooldown.wait_time = 0.15
 		pistolshootcooldown.start()
 		muzzleflash.enabled = true
 		timerflash.start()
@@ -202,7 +212,7 @@ func shoot_auto() -> void:
 		return
 	bullet.global_position = muzzle.global_position
 	bullet.global_rotation = muzzle.global_rotation
-	if riflemagazine != 0 and shootcooldown == false:
+	if riflemagazine != 0 and shootcooldown == false and current_gun == Gun.RIFLE:
 		riflemagazine -= 1
 		shootcooldown = true
 		get_tree().current_scene.add_child(bullet)

@@ -1,9 +1,9 @@
 extends Node2D
-@onready var speed: float = 14000.0
+@onready var speed: float = 5000.0
 @onready var damage: float = 35.0
 @onready var max_lifetime: float = 4.0
 @onready var line_2d: Line2D = $Line2D
-
+@export var max_spread_degrees: float = 6.0
 
 var velocity: Vector2 = Vector2.ZERO
 var lifetime: float = 0.0
@@ -11,6 +11,10 @@ var total_distance_traveled: float = 0.0
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	var max_spread_rad = deg_to_rad(max_spread_degrees)
+	var random_offset = randf_range(-max_spread_rad, max_spread_rad)
+	rotation += random_offset
+	
 	velocity = Vector2.RIGHT.rotated(rotation) * speed
 	
 	line_2d.clear_points()
@@ -37,16 +41,17 @@ func _process(delta: float) -> void:
 	else:
 		global_position = next_position
 		update_tracer(movement_step)
-
+		
 	lifetime += delta
 	if lifetime >= max_lifetime:
 		queue_free()
 
 func update_tracer(_movement_step: Vector2) -> void:
-	var current_length = min(200, total_distance_traveled)
-
+	var max_tracer_length = 250.0
+	var current_length = min(max_tracer_length, total_distance_traveled)
+	
 	line_2d.set_point_position(1, Vector2.ZERO)
-	line_2d.set_point_position(0, Vector2(-current_length, 0.0)) #change for differing length of tracer
+	line_2d.set_point_position(0, Vector2.LEFT * current_length)
 
 func handle_collision(result: Dictionary) -> void:
 	var collider = result.collider
