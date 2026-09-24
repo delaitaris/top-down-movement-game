@@ -16,3 +16,5 @@ default_color = Color(0.54036087, 0.4053232, 0.28355023, 1)
 joint_mode = 1
 begin_cap_mode = 2
 end_cap_mode = 2
+
+[node name="RayCast2D" type="RayCast2D" parent="." unique_id=1736466820]

@@ -1,62 +1,39 @@
 extends Node2D
-@onready var speed: float = 5000.0
-@onready var damage: float = 35.0
-@onready var max_lifetime: float = 4.0
+
+@export var speed: float = 4500.0
+@export var damage: float = 35.0
+@export var max_lifetime: float = 4.0
+@export var max_spread_degrees: float = 2.0
+@export var laser_length: float = 200.0
+
+@onready var ray_cast_2d: RayCast2D = $RayCast2D
 @onready var line_2d: Line2D = $Line2D
-@export var max_spread_degrees: float = 6.0
 
 var velocity: Vector2 = Vector2.ZERO
 var lifetime: float = 0.0
-var total_distance_traveled: float = 0.0
 
-# Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	look_at(get_global_mouse_position())
+	
 	var max_spread_rad = deg_to_rad(max_spread_degrees)
-	var random_offset = randf_range(-max_spread_rad, max_spread_rad)
-	rotation += random_offset
+	rotation += randf_range(-max_spread_rad, max_spread_rad)
 	
 	velocity = Vector2.RIGHT.rotated(rotation) * speed
+	ray_cast_2d.target_position = Vector2(laser_length, 0)
 	
 	line_2d.clear_points()
 	line_2d.add_point(Vector2.ZERO)
-	line_2d.add_point(Vector2.ZERO)
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
+	line_2d.add_point(Vector2(laser_length, 0))
+	
 func _process(delta: float) -> void:
-	var movement_step = velocity * delta
-	var current_position = global_position
-	var next_position = current_position + movement_step
-	var space_state = get_world_2d().direct_space_state
-	var query = PhysicsRayQueryParameters2D.create(current_position, next_position)
-	var result = space_state.intersect_ray(query)
+	if ray_cast_2d.is_colliding():
+		var collider = ray_cast_2d.get_collider()
+		if collider and collider.has_method("take_damage"):
+			collider.take_damage(damage)
+		queue_free()
+		return
 
-	total_distance_traveled += movement_step.length()
-	query.collide_with_areas = true
-	query.collide_with_bodies = true
-
-	if result: 
-		global_position = result.position
-		handle_collision(result)
-		print('hit')
-	else:
-		global_position = next_position
-		update_tracer(movement_step)
-		
+	position += velocity * delta
 	lifetime += delta
 	if lifetime >= max_lifetime:
 		queue_free()
-
-func update_tracer(_movement_step: Vector2) -> void:
-	var max_tracer_length = 250.0
-	var current_length = min(max_tracer_length, total_distance_traveled)
-	
-	line_2d.set_point_position(1, Vector2.ZERO)
-	line_2d.set_point_position(0, Vector2.LEFT * current_length)
-
-func handle_collision(result: Dictionary) -> void:
-	var collider = result.collider
-	
-	if collider.has_method("take_damage"):
-		collider.take_damage(damage)
-	
-	queue_free()
