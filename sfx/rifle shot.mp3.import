@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://benimkvlgmpj6"
+path="res://.godot/imported/rifle shot.mp3-24c7f628d3af1ffe33cc27723874bf60.mp3str"
+
+[deps]
+
+source_file="res://sfx/rifle shot.mp3"
+dest_files=["res://.godot/imported/rifle shot.mp3-24c7f628d3af1ffe33cc27723874bf60.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

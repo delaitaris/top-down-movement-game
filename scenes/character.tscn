@@ -7,6 +7,7 @@
 [ext_resource type="Script" uid="uid://cuyaapx2vxu13" path="res://scripts/camera_2d.gd" id="3_px5sl"]
 [ext_resource type="Texture2D" uid="uid://dcnwusatpaigl" path="res://sprites/2d_lights_and_shadows_neutral_point_light.webp" id="6_0lw5n"]
 [ext_resource type="AudioStream" uid="uid://dfoj0gqgkvvic" path="res://sfx/pistol reload.mp3" id="7_2cgup"]
+[ext_resource type="AudioStream" uid="uid://benimkvlgmpj6" path="res://sfx/rifle shot.mp3" id="7_a5ia6"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_0lw5n"]
 atlas = ExtResource("2_dp8ca")
@@ -177,6 +178,9 @@ one_shot = true
 
 [node name="CanvasModulate" type="CanvasModulate" parent="LightDarkener" unique_id=1396223506]
 color = Color(0.2, 0.2, 0.188, 1)
+
+[node name="RifleShot" type="AudioStreamPlayer2D" parent="." unique_id=1144477993]
+stream = ExtResource("7_a5ia6")
 
 [node name="PistolReload" type="AudioStreamPlayer2D" parent="." unique_id=1287440510]
 stream = ExtResource("7_2cgup")

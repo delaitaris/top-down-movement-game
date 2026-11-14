@@ -12,6 +12,7 @@ extends CharacterBody2D
 @onready var flashlight_toggle: PointLight2D = $Flashlight
 @onready var reloadtimer: Timer = $Muzzle/Reload
 @onready var pistolreloadsfx: AudioStreamPlayer2D = $PistolReload
+@onready var rifleshotsfx: AudioStreamPlayer2D = $RifleShot
 @onready var pistolshootcooldown: Timer = $Muzzle/ShootCooldown
 
 @export_range(0.0, 180.0) var cone_angle_degrees := 60.0
@@ -175,27 +176,12 @@ func shoot() -> void:
 	if not bullet_scene:
 		return
 
-	# 1. PISTOL CHECK: Must be holding the pistol AND have ammo
 	if current_gun == Gun.PISTOL and pistolmagazine > 0:
 		$Muzzleflash.texture_scale = randf_range(4, 6)
 		$Muzzleflash.energy = randf_range(1.5, 2.5)
 		muzzleflash.enabled = true
 		timerflash.start()
 		
-		# Only instantiate the bullet if we pass the ammo check
-		var bullet = bullet_scene.instantiate()
-		bullet.global_position = muzzle.global_position
-		bullet.global_rotation = muzzle.global_rotation
-		get_tree().current_scene.add_child(bullet)
-
-	# 2. SHOTGUN CHECK: Must be holding the shotgun AND have ammo
-	elif current_gun == Gun.SHOTGUN and shotgunmagazine > 0:
-		$Muzzleflash.texture_scale = randf_range(4, 6)
-		$Muzzleflash.energy = randf_range(1.5, 2.5)
-		muzzleflash.enabled = true
-		timerflash.start()
-		
-		# For a shotgun, we run a loop to spawn multiple pellets at once
 		var bullet = bullet_scene.instantiate()
 		bullet.global_position = muzzle.global_position
 		bullet.global_rotation = muzzle.global_rotation
@@ -204,10 +190,13 @@ func shoot() -> void:
 func shoot_auto() -> void:
 	var bullet = bullet_scene.instantiate()
 	if current_gun == Gun.RIFLE and riflemagazine != 0:
+		$Muzzleflash.texture_scale = randf_range(4, 6)
+		$Muzzleflash.energy = randf_range(1.5, 2.5)
 		pistolshootcooldown.wait_time = 0.15
 		pistolshootcooldown.start()
 		muzzleflash.enabled = true
 		timerflash.start()
+		rifleshotsfx.play()
 	if not bullet_scene:
 		return
 	bullet.global_position = muzzle.global_position
