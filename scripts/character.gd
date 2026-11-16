@@ -12,8 +12,9 @@ extends CharacterBody2D
 @onready var flashlight_toggle: PointLight2D = $Flashlight
 @onready var reloadtimer: Timer = $Muzzle/Reload
 @onready var pistolreloadsfx: AudioStreamPlayer2D = $PistolReload
-@onready var rifleshotsfx: AudioStreamPlayer2D = $RifleShot
+@onready var pistolshotsfx: AudioStreamPlayer2D = $PistolShot
 @onready var pistolshootcooldown: Timer = $Muzzle/ShootCooldown
+@onready var rifleshotsfx: AudioStreamPlayer2D = $RifleShot
 
 @export_range(0.0, 180.0) var cone_angle_degrees := 60.0
 @export var bullet_scene: PackedScene
@@ -175,13 +176,12 @@ func _unhandled_input(_event: InputEvent) -> void:
 func shoot() -> void:
 	if not bullet_scene:
 		return
-
 	if current_gun == Gun.PISTOL and pistolmagazine > 0:
 		$Muzzleflash.texture_scale = randf_range(4, 6)
 		$Muzzleflash.energy = randf_range(1.5, 2.5)
 		muzzleflash.enabled = true
 		timerflash.start()
-		
+		pistolshotsfx.play()
 		var bullet = bullet_scene.instantiate()
 		bullet.global_position = muzzle.global_position
 		bullet.global_rotation = muzzle.global_rotation

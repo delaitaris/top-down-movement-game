@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://cmbrgf6ypoxn7"
+path="res://.godot/imported/9mm pistol first test.mp3-e507e6380face182d7331609dbeca360.mp3str"
+
+[deps]
+
+source_file="res://sfx/9mm pistol first test.mp3"
+dest_files=["res://.godot/imported/9mm pistol first test.mp3-e507e6380face182d7331609dbeca360.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4
