@@ -6,7 +6,7 @@
 [ext_resource type="Script" uid="uid://b4l0iga6446an" path="res://scripts/animated_sprite_2d.gd" id="3_0lw5n"]
 [ext_resource type="Script" uid="uid://cuyaapx2vxu13" path="res://scripts/camera_2d.gd" id="3_px5sl"]
 [ext_resource type="Texture2D" uid="uid://dcnwusatpaigl" path="res://sprites/2d_lights_and_shadows_neutral_point_light.webp" id="6_0lw5n"]
-[ext_resource type="AudioStream" uid="uid://bbpo535lc73aq" path="res://sfx/rifle shot sfx test 2.mp3" id="7_0dpix"]
+[ext_resource type="AudioStream" uid="uid://vlv30ns526vr" path="res://sfx/rifle shot sfx test 3.mp3" id="7_0dpix"]
 [ext_resource type="AudioStream" uid="uid://dfoj0gqgkvvic" path="res://sfx/pistol reload.mp3" id="7_2cgup"]
 [ext_resource type="AudioStream" uid="uid://cmbrgf6ypoxn7" path="res://sfx/9mm pistol first test.mp3" id="9_0dpix"]
 
@@ -182,14 +182,20 @@ color = Color(0.2, 0.2, 0.188, 1)
 
 [node name="RifleShot" type="AudioStreamPlayer2D" parent="." unique_id=1144477993]
 stream = ExtResource("7_0dpix")
+volume_db = 2.0
+pitch_scale = 0.9
 max_polyphony = 2
+bus = &"Warehouse Reverb"
 
 [node name="PistolReload" type="AudioStreamPlayer2D" parent="." unique_id=1287440510]
 stream = ExtResource("7_2cgup")
+volume_db = -14.0
+bus = &"Warehouse Reverb"
 
 [node name="PistolShot" type="AudioStreamPlayer2D" parent="." unique_id=735210047]
 stream = ExtResource("9_0dpix")
 max_polyphony = 2
+bus = &"Warehouse Reverb"
 
 [connection signal="mouse_entered" from="West" to="." method="_on_west_mouse_entered"]
 [connection signal="mouse_exited" from="West" to="." method="_on_west_mouse_exited"]

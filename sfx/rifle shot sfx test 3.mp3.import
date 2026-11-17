@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://vlv30ns526vr"
+path="res://.godot/imported/rifle shot sfx test 3.mp3-ae73de72cf7ded494258d49d5353d502.mp3str"
+
+[deps]
+
+source_file="res://sfx/rifle shot sfx test 3.mp3"
+dest_files=["res://.godot/imported/rifle shot sfx test 3.mp3-ae73de72cf7ded494258d49d5353d502.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

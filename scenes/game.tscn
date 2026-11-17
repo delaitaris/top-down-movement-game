@@ -5,7 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://21m1c6lecaaj" path="res://sprites/basic tilemap blocks.png" id="3_lnu2h"]
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_lnu2h"]
-polygon = PackedVector2Array(-64, -64, 64, -64, 64, 64, -64, 64)
+polygon = PackedVector2Array(-46, -48, 50, -48, 50, 45, -47, 44)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_yqjtg"]
 texture = ExtResource("2_lnu2h")
