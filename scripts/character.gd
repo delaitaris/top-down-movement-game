@@ -5,16 +5,22 @@ extends CharacterBody2D
 @onready var flashlightblock: LightOccluder2D = $FlashlightOccluder
 @onready var muzzle: Marker2D = $Muzzle
 @onready var muzzleflash: PointLight2D = $Muzzleflash
-@onready var timerflash: Timer = $Muzzleflash/Timer
 @onready var muzzleblock: LightOccluder2D = $MuzzleOccluder
-@onready var lightdarkentimer: Timer = $LightDarkener
 @onready var lightdarkencanvas: CanvasModulate = $LightDarkener/CanvasModulate
 @onready var flashlight_toggle: PointLight2D = $Flashlight
+#timers
 @onready var reloadtimer: Timer = $Muzzle/Reload
+@onready var lightdarkentimer: Timer = $LightDarkener
+@onready var timerflash: Timer = $Muzzleflash/Timer
+@onready var footsteptimer: Timer = $FootstepSFX/FootstepTimer
+#sfx
 @onready var pistolreloadsfx: AudioStreamPlayer2D = $PistolReload
 @onready var pistolshotsfx: AudioStreamPlayer2D = $PistolShot
-@onready var pistolshootcooldown: Timer = $Muzzle/ShootCooldown
 @onready var rifleshotsfx: AudioStreamPlayer2D = $RifleShot
+@onready var footstepsfx: AudioStreamPlayer2D = $FootstepSFX
+#cooldown
+@onready var pistolshootcooldown: Timer = $Muzzle/ShootCooldown
+
 
 @export_range(0.0, 180.0) var cone_angle_degrees := 60.0
 @export var bullet_scene: PackedScene
@@ -37,7 +43,7 @@ var riflemagazine = 30
 var riflemagazinemax = 1
 var shotgunmagazine = 5
 var shotgunmagazinemax = 1
-
+var footstep = false
 
 func _ready() -> void:
 	muzzleflash.shadow_enabled = true
@@ -66,16 +72,27 @@ func _physics_process(_delta: float) -> void:
 	var movement_direction := Input.get_vector("a","d", "w", "s").normalized()
 	var speed: float = 250.0
 	var boosted_speed: = speed * 1.8
+
 	if movement_direction != Vector2.ZERO:
+
 		if current_stance == Stance.STANDING:
 			speed = speed
 			boosted_speed = speed * 1.4
+			if !footstep and speed != boosted_speed:
+				footstepsfx.play()
+				footsteptimer.start(0.6)
+				footstep = true
 		elif current_stance == Stance.CROUCHING:
 			speed = 150.0
 			boosted_speed = speed * 1.6
+			if !footstep and speed != boosted_speed:
+				footstepsfx.play()
+				footsteptimer.start(0.8)
+				footstep = true
 		else:
 			speed = 50.0
 			boosted_speed = speed * 1.8
+
 		if north and velocity.y < 0:
 			speed = boosted_speed
 		if south and velocity.y > 0:
@@ -86,6 +103,10 @@ func _physics_process(_delta: float) -> void:
 			speed = boosted_speed
 	if speed == boosted_speed and movement_direction:
 		particles.emitting = true
+		if !footstep:
+			footstepsfx.play()
+			footsteptimer.start(0.4)
+			footstep = true
 	else: 
 		particles.emitting = false
 	velocity = movement_direction * speed
@@ -105,6 +126,11 @@ func _physics_process(_delta: float) -> void:
 		current_stance = Stance.STANDING
 		print("standing")
 	move_and_slide()
+
+
+func _on_footstep_timer_timeout() -> void:
+	footstep = false
+
 
 # POLES CHECKING
 
