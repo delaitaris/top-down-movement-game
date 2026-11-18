@@ -60,8 +60,6 @@ func _process(_delta: float) -> void:
 		cooldowntime = 0.2
 	if current_gun == Gun.RIFLE:
 		cooldowntime = 0.1
-	if current_gun == Gun.SHOTGUN:
-		cooldowntime = 0.8
 
 	if Input.is_action_pressed("shoot") and !shootcooldown and !reloading and current_gun == Gun.RIFLE:
 		shoot_auto()
@@ -74,7 +72,6 @@ func _physics_process(_delta: float) -> void:
 	var boosted_speed: = speed * 1.8
 
 	if movement_direction != Vector2.ZERO:
-
 		if current_stance == Stance.STANDING:
 			speed = speed
 			boosted_speed = speed * 1.4
@@ -92,7 +89,6 @@ func _physics_process(_delta: float) -> void:
 		else:
 			speed = 50.0
 			boosted_speed = speed * 1.8
-
 		if north and velocity.y < 0:
 			speed = boosted_speed
 		if south and velocity.y > 0:
@@ -103,10 +99,6 @@ func _physics_process(_delta: float) -> void:
 			speed = boosted_speed
 	if speed == boosted_speed and movement_direction:
 		particles.emitting = true
-		if !footstep:
-			footstepsfx.play()
-			footsteptimer.start(0.4)
-			footstep = true
 	else: 
 		particles.emitting = false
 	velocity = movement_direction * speed
@@ -126,7 +118,6 @@ func _physics_process(_delta: float) -> void:
 		current_stance = Stance.STANDING
 		print("standing")
 	move_and_slide()
-
 
 func _on_footstep_timer_timeout() -> void:
 	footstep = false
@@ -194,9 +185,6 @@ func _unhandled_input(_event: InputEvent) -> void:
 	elif Input.is_action_just_pressed("3"):
 		current_gun = Gun.RIFLE
 		riflemagazinemax = 30
-	elif Input.is_action_just_pressed("4"):
-		current_gun = Gun.SHOTGUN
-		shotgunmagazinemax = 5
 
 
 func shoot() -> void:
@@ -212,7 +200,6 @@ func shoot() -> void:
 		bullet.global_position = muzzle.global_position
 		bullet.global_rotation = muzzle.global_rotation
 		get_tree().current_scene.add_child(bullet)
-
 func shoot_auto() -> void:
 	var bullet = bullet_scene.instantiate()
 	if current_gun == Gun.RIFLE and riflemagazine != 0:
@@ -231,8 +218,7 @@ func shoot_auto() -> void:
 		riflemagazine -= 1
 		shootcooldown = true
 		get_tree().current_scene.add_child(bullet)
-	
-	
+
 func flashlight() -> void:
 	if flashlight_toggle.enabled == false:
 		flashlight_toggle.enabled = true
