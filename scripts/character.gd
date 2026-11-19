@@ -18,6 +18,7 @@ extends CharacterBody2D
 @onready var pistolshotsfx: AudioStreamPlayer2D = $PistolShot
 @onready var rifleshotsfx: AudioStreamPlayer2D = $RifleShot
 @onready var footstepsfx: AudioStreamPlayer2D = $FootstepSFX
+@onready var altfootstepsfx: AudioStreamPlayer2D = $FootstepSFX2
 #cooldown
 @onready var pistolshootcooldown: Timer = $Muzzle/ShootCooldown
 
@@ -44,6 +45,8 @@ var riflemagazinemax = 1
 var shotgunmagazine = 5
 var shotgunmagazinemax = 1
 var footstep = false
+var footstepalternate = false
+var changedfootstep = false
 
 func _ready() -> void:
 	muzzleflash.shadow_enabled = true
@@ -76,16 +79,28 @@ func _physics_process(_delta: float) -> void:
 			speed = speed
 			boosted_speed = speed * 1.4
 			if !footstep and speed != boosted_speed:
-				footstepsfx.play()
+				if footstepalternate:
+					altfootstepsfx.play()
+					footstepalternate = false
+				elif !footstepalternate:
+					footstepsfx.play()
+					changedfootstep = false
 				footsteptimer.start(0.6)
 				footstep = true
+
 		elif current_stance == Stance.CROUCHING:
 			speed = 150.0
 			boosted_speed = speed * 1.6
 			if !footstep and speed != boosted_speed:
-				footstepsfx.play()
+				if footstepalternate:
+					altfootstepsfx.play()
+					footstepalternate = false
+				elif !footstepalternate:
+					footstepsfx.play()
+					changedfootstep = false
 				footsteptimer.start(0.8)
 				footstep = true
+				
 		else:
 			speed = 50.0
 			boosted_speed = speed * 1.8
@@ -121,7 +136,9 @@ func _physics_process(_delta: float) -> void:
 
 func _on_footstep_timer_timeout() -> void:
 	footstep = false
-
+	if !changedfootstep:
+		footstepalternate = true
+		changedfootstep = true
 
 # POLES CHECKING
 

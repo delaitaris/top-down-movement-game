@@ -10,6 +10,7 @@
 [ext_resource type="AudioStream" uid="uid://dfoj0gqgkvvic" path="res://sfx/pistol reload.mp3" id="7_2cgup"]
 [ext_resource type="AudioStream" uid="uid://cmbrgf6ypoxn7" path="res://sfx/9mm pistol first test.mp3" id="9_0dpix"]
 [ext_resource type="AudioStream" uid="uid://j7xtxu37p0ua" path="res://sfx/footstep test 1.mp3" id="10_2hyy3"]
+[ext_resource type="AudioStream" uid="uid://82nrpgrrlv10" path="res://sfx/second footstep.mp3" id="11_irmqu"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_0lw5n"]
 atlas = ExtResource("2_dp8ca")
@@ -190,7 +191,7 @@ bus = &"Warehouse Reverb"
 
 [node name="PistolReload" type="AudioStreamPlayer2D" parent="." unique_id=1287440510]
 stream = ExtResource("7_2cgup")
-volume_db = -14.0
+volume_db = -20.0
 bus = &"Warehouse Reverb"
 
 [node name="PistolShot" type="AudioStreamPlayer2D" parent="." unique_id=735210047]
@@ -207,6 +208,11 @@ bus = &"Warehouse Reverb"
 [node name="FootstepTimer" type="Timer" parent="FootstepSFX" unique_id=1829582052]
 wait_time = 0.6
 autostart = true
+
+[node name="FootstepSFX2" type="AudioStreamPlayer2D" parent="." unique_id=1560531589]
+stream = ExtResource("11_irmqu")
+volume_db = -8.0
+bus = &"Warehouse Reverb"
 
 [connection signal="mouse_entered" from="West" to="." method="_on_west_mouse_entered"]
 [connection signal="mouse_exited" from="West" to="." method="_on_west_mouse_exited"]
